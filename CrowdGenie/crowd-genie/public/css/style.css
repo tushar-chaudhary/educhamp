@@ -1,0 +1,522 @@
+:root {
+  --color-primary: #eb2f64;
+  --color-primary-light: #ff3366;
+  --color-primary-dark: #ba265d;
+  --color-grey-light-1: #faf9f9;
+  --color-grey-light-2: #f4f2f2;
+  --color-grey-light-3: #f0eeee;
+  --color-grey-light-4: #ccc;
+  --color-grey-dark-1: #333;
+  --color-grey-dark-2: #777;
+  --color-grey-dark-3: #999;
+  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
+  --line: 1px solid var(--color-grey-light-2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.primary-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.white {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.caption {
+  padding: 1.5rem;
+  margin-left: -8% !important;
+}
+
+.site-info {
+  position: absolute;
+  top: 50%;
+  left: 49%;
+  transform: translate(-50%, -50%);
+}
+
+.button {
+  background-color: #4caf50;
+  /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.site-text {
+  font-weight: 800;
+  font-size: 3rem;
+}
+
+.site-text2 {
+  font-weight: 800;
+  font-size: 1.8rem;
+}
+
+.button5 {
+  position: absolute;
+  top: 130%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 800;
+  font-size: 1.4vw;
+  color: white;
+  border: 3px solid orange;
+}
+
+.main-header {
+  background: url(../imgages/book.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  min-height: 600px;
+  color: #fff;
+  position: relative;
+}
+
+.main-header2 {
+  background: url(../images/dark.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  min-height: 600px;
+  color: #fff;
+  position: relative;
+}
+
+.main-header3 {
+  background: url(../images/guy.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  min-height: 600px;
+  color: #fff;
+  position: relative;
+}
+
+.heading-1 {
+  color: black;
+}
+
+.selectclass {
+  margin-top: 5% !important;
+}
+
+.comp {
+  font-size: 150%;
+  font-weight: 600;
+}
+
+.selectSize {
+  font-size: 140% !important;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.brand {
+  margin-left: 2%;
+  font-family: 'Permanent Marker', monospace;
+  letter-spacing: 0.1rem;
+}
+
+.brand-logo {
+  font-size: 4.1rem !important;
+}
+
+.content {
+  margin-top: 10rem;
+  padding: 1.5rem;
+}
+.content__quotes,
+.content__heading {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.1rem;
+  font-weight: 500;
+  line-height: 4rem;
+}
+.content__image {
+  margin-top: 1%;
+}
+
+.moreinfo {
+  margin-top: 5%;
+  padding: 1.5rem;
+}
+.moreinfo__heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 100;
+}
+.moreinfo__heading1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 4rem;
+}
+.moreinfo__subheading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: 3rem;
+}
+.moreinfo__explore {
+  margin-top: 10%;
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  border-bottom: 2px solid black;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.moreinfo__explore2 {
+  margin-top: 5%;
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  border-bottom: 2px solid black;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.continuebtn {
+  margin-top: 5% !important;
+}
+
+.section-boxes {
+  margin-top: 2%;
+  padding: 1.5rem;
+}
+
+.box {
+  width: 24% !important;
+  padding: 40px 10px !important;
+}
+.box__heading {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+.box__text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 120%;
+  font-weight: 400;
+}
+
+.box-marging {
+  margin-right: 1%;
+}
+
+.student-speaks {
+  margin-top: 5%;
+}
+.student-speaks__slidesbackground {
+  background: linear-gradient(
+      to top,
+      rgba(159, 7, 7, 0) 0%,
+      rgba(110, 4, 4, 0) 59%,
+      rgba(37, 35, 35, 0.65) 100%
+    ),
+    url('../img/board.jpg') no-repeat;
+  height: 200px;
+  background-size: cover;
+}
+.student-speaks__quotes,
+.student-speaks__heading {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  line-height: 4rem;
+}
+
+.signup {
+  margin-top: 5%;
+  padding: 1.5rem;
+}
+.signup__heading {
+  margin-left: 10%;
+  font-size: 5rem;
+  font-family: 'Monsterrat', sans-serif;
+  font-weight: 1000;
+  line-height: 1;
+}
+.signup__text {
+  margin-left: 10%;
+  font-size: 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+.signup__btn {
+  margin-top: 15%;
+  font-weight: 900;
+  font-size: 2.5rem;
+  font-family: 'Roboto', sans-serif;
+  border-radius: 5rem;
+  border: 3px solid black;
+}
+
+.page-footer {
+  padding: 1.5rem !important;
+  margin-top: 5%;
+}
+.page-footer__about {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 2rem;
+}
+.page-footer__text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.popup {
+  position: absolute;
+  width: 45%;
+  top: 10%;
+  left: 55%;
+  box-shadow: 1rem 1rem 2rem black;
+}
+.popup__container {
+  padding: 1.5rem 2rem 0 2rem;
+}
+.popup__heading {
+  letter-spacing: 0.1rem;
+  font-family: 'Roboto', sans-serif;
+  color: grey;
+  line-height: 2;
+}
+.popup__btn {
+  margin: 1rem 0 2rem 0;
+}
+.popup__create {
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}
+.popup__login {
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+}
+
+.asterisk {
+  font-size: 0.6rem;
+}
+
+.createAccount {
+  display: block;
+  margin-top: 5%;
+  padding: 2rem;
+  cursor: pointer !important;
+}
+.createAccount__myaccount {
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  font-family: 'Roboto', sans-serif;
+}
+.createAccount__alreadyhaveanaccount {
+  display: inline-block;
+  margin-top: 15%;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  font-family: 'Roboto', sans-serif;
+  transform: all 0.2s;
+}
+.createAccount__alreadyhaveanaccount:hover {
+  text-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.7);
+}
+.createAccount__form {
+  margin-top: 8%;
+}
+.createAccount__form1 {
+  margin-top: 5%;
+}
+.createAccount__form2 {
+  margin-top: 3%;
+  padding-left: 0.1%;
+}
+.createAccount__form2-span {
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem !important;
+  color: black;
+}
+
+.gender {
+  margin-left: 1%;
+  font-family: 'Monsterrat', sans-serif;
+  color: #313131;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  top: -100%;
+}
+
+.genderform {
+  margin-top: -3%;
+}
+
+.input-field > label {
+  font-family: 'Monsterrat', sans-serif;
+  color: #313131;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  top: -100%;
+  cursor: default;
+}
+
+input[type='text']:not(.browser-default) {
+  border: 2px solid #e7e7e7 !important;
+  border-radius: 2px;
+}
+
+.subscription {
+  margin-top: -20%;
+  padding: 1.5rem;
+}
+.subscription__center {
+  padding: 2rem 6rem;
+}
+.subscription__heading {
+  font-weight: 600;
+  font-family: 'Roboto', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+  padding-left: 1rem;
+}
+.subscription__text {
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+}
+.subscription__title {
+  font-family: 'Monsterrat', sans-serif !important;
+  text-transform: uppercase;
+  font-weight: 800 !important;
+  font-size: 4rem !important;
+}
+.subscription__price {
+  color: white !important;
+  margin-top: 5rem;
+  font-family: 'Monstrerrat', sans-serif !important;
+  text-transform: uppercase;
+  font-weight: 800 !important;
+  font-size: 3.5rem;
+  line-height: 1rem;
+  position: relative;
+}
+.subscription__margin {
+  margin-top: 5% !important;
+}
+.subscription__year {
+  margin-top: -1%;
+  font-family: 'Monstrerrat', sans-serif !important;
+  font-weight: 800 !important;
+}
+.subscription__year1 {
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 2rem !important;
+}
+.subscription__year2 {
+  margin-top: 20% !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 2rem !important;
+}
+.subscription__benifits {
+  margin-top: 10% !important;
+}
+.subscription__upgrade {
+  margin-top: 5% !important;
+}
+
+.dollar {
+  position: relative;
+  top: -0.8rem;
+  left: 0rem;
+  font-size: 2rem;
+}
+
+.payment {
+  padding: 2rem;
+  margin-top: 5%;
+}
+.payment__name {
+  font-family: 'Monsterrat', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 1000;
+  background-color: black;
+  color: white;
+  padding: 3rem;
+  border-radius: 0.5rem;
+}
+.payment__price {
+  font-family: 'Monsterrat', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 1000;
+  margin-top: 5rem;
+  line-height: 1rem;
+  position: relative;
+}
+.payment__year {
+  font-family: 'Monsterrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+}
+.payment__detail {
+  margin-top: 5%;
+  color: grey !important;
+  font-family: 'Monsterrat', sans-serif;
+  font-size: 2rem !important;
+  font-weight: 600;
+  letter-spacing: 0.2rem !important;
+}
+.payment__option {
+  font-family: 'Roboto', sans-serif;
+  font-size: 3rem !important;
+  font-weight: 600;
+}
+.payment__divider {
+  display: block;
+  border-bottom: 0.19em solid #c0bbbb;
+}
+.payment__payoptions {
+  margin-top: 5%;
+}
+
+.optionspan {
+  font-size: 1.8rem !important;
+  color: black !important;
+  font-family: 'Roboto', sans-serif;
+}
