@@ -5,6 +5,7 @@ import { addChildren } from '../../actions/addChildrenActions';
 import { connect } from 'react-redux';
 
 class AddChildren extends Component {
+  //State names
   constructor() {
     super();
     this.state = {
@@ -13,24 +14,31 @@ class AddChildren extends Component {
       schoolyear: '',
       errors: {}
     };
+
+    //initializing the functions and binding it
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  //called first when page is loaded
   componentDidMount() {
+    //move to top
     window.scrollTo(0, 0);
   }
 
+  //update props when it newer value arrives
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
   }
 
+  //initializing state names based on the inout names and their values
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  //on page submission
   onSubmit(e) {
     const newUser = {
       user: this.props.user.id,

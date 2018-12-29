@@ -1561,3 +1561,89 @@ body .nav-main a:hover {
   margin-left: 2rem;
   text-decoration: none;
 }
+
+.mathemafix {
+  margin-top: 5%;
+  padding: 3rem !important;
+}
+.mathemafix__card {
+  border-radius: 1rem;
+}
+.mathemafix__testname {
+  text-align: center;
+  margin-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600 !important;
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+}
+.mathemafix__testtime {
+  text-align: center;
+  margin-top: 2%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600 !important;
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+}
+.mathemafix__testremaining {
+  text-align: left;
+  margin-top: 2%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600 !important;
+  font-size: 2rem;
+  padding-left: 1%;
+  letter-spacing: 0.1rem;
+}
+.mathemafix__testtime-text {
+  text-align: center;
+  margin-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400 !important;
+  font-size: 2rem;
+  padding-left: 0.5rem;
+  letter-spacing: 0.1rem;
+}
+.mathemafix__testquestion {
+  text-align: left;
+  margin-top: 5%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600 !important;
+  font-size: 3rem;
+  padding-left: 0.5rem;
+  letter-spacing: 0.1rem;
+}
+.mathemafix__testanswer {
+  text-align: left;
+  margin-top: 2%;
+  padding-bottom: 3rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600 !important;
+  font-size: 2rem;
+  padding-left: 0.5rem;
+  letter-spacing: 0.1rem;
+}
+.mathemafix__testquestion1 {
+  text-align: left;
+  margin-top: 2%;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500 !important;
+  font-size: 2rem;
+  padding-left: 0.5rem;
+  letter-spacing: 0.1rem;
+}
+.mathemafix-question {
+  margin-top: 2%;
+  border: 2px solid #ebe9e9;
+}
+
+.radio-size {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600 !important;
+  color: #383838;
+  font-size: 2rem !important;
+}
+
+.margin-5per {
+  margin-top: 5%;
+  margin-bottom: 3%;
+}

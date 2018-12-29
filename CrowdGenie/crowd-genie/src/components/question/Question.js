@@ -5,31 +5,75 @@ import Navbar from '../layout/Navbar';
 import { getQuestions } from '../../actions/profileAction';
 
 class Question extends Component {
+  //State names
   constructor() {
     super();
     this.state = {
       testPaper: [],
       questions: [],
       answers: [],
+      correctanswers: [],
       timeout: '',
+      remainingQuestions: [],
+      answeredQuestions: [],
+      lefttime: 0,
       currentQuestionIndex: 0,
       minutes: 0,
       seconds: 0,
+      currentQuestionminutes: 0,
+      currentQuestionseconds: 0,
       errors: {}
     };
 
+    // function declaration and binding them
     this.onNextQuestion = this.onNextQuestion.bind(this);
     this.handler = this.handler.bind(this);
+    this.handlercurent = this.handlercurent.bind(this);
   }
 
+  //To move to nex Question
   onNextQuestion(e) {
-    this.setState({
-      currentQuestionIndex: this.state.currentQuestionIndex + 1,
-      minutes: 0,
-      seconds: 0
+    document.getElementsByName('correctanswer').forEach(checked => {
+      if (checked.checked) {
+        // storing in localstorage the answers that are submitted
+        var oldItems = JSON.parse(localStorage.getItem('test')) || [];
+
+        const dict = {};
+        //encrypting the answer and correct answer
+        dict[this.state.currentQuestionIndex + 1] = checked.value;
+        dict['correctAnswer'] = this.state.correctanswers[
+          this.state.currentQuestionIndex
+        ];
+        oldItems.push(dict);
+        localStorage.setItem('test', JSON.stringify(oldItems));
+
+        document.getElementsByName('correctanswer').forEach(checked => {
+          if (checked.checked) {
+            checked.checked = false;
+          }
+        });
+
+        if (oldItems.length === this.state.questions.length) {
+          console.log('DSdsad');
+        } else {
+          this.setState({
+            answeredQuestions: [
+              ...this.state.answeredQuestions,
+              this.state.currentQuestionIndex + 1 + ', '
+            ],
+            currentQuestionIndex: this.state.currentQuestionIndex + 1,
+            currentQuestionseconds: 0,
+            currentQuestionminutes: 0
+          });
+
+          // move to top of the screen
+          window.scrollTo(0, 200);
+        }
+      }
     });
   }
 
+  //Timer for the test
   handler(e) {
     this.setState({ seconds: this.state.seconds + 1 });
     if (this.state.seconds === 60) {
@@ -39,48 +83,108 @@ class Question extends Component {
     }
 
     if (
-      document.getElementById('demo') !== null &&
-      document.getElementById('demo') !== undefined
+      document.getElementById('time') !== null &&
+      document.getElementById('time') !== undefined
     ) {
-      document.getElementById('demo').innerHTML =
+      document.getElementById('time').innerHTML =
         (this.state.minutes < 10
           ? '0' + this.state.minutes
           : this.state.minutes) +
-        ':' +
+        'm ' +
         (this.state.seconds < 10
           ? '0' + this.state.seconds
-          : this.state.seconds);
+          : this.state.seconds) +
+        's ';
     }
   }
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-    this.props.getQuestions();
+  //Timer for the per question
+  handlercurent(e) {
+    this.setState({
+      currentQuestionseconds: this.state.currentQuestionseconds + 1
+    });
+    if (this.state.currentQuestionseconds === 60) {
+      this.setState({ currentQuestionseconds: 0 });
+      this.setState({
+        currentQuestionminutes: this.state.currentQuestionminutes + 1
+      });
+      if (this.state.currentQuestionminutes === 60)
+        this.setState({ currentQuestionminutes: 0 });
+    }
 
-    var date = new Date();
-    // var sec = date.getSeconds();
-    var sec = this.state.seconds;
-    // var min = date.getMinutes();
-    var min = this.state.minutes;
-
-    setInterval(this.handler, 1000);
-    this.handler();
+    if (
+      document.getElementById('currentTime') !== null &&
+      document.getElementById('currentTime') !== undefined
+    ) {
+      document.getElementById('currentTime').innerHTML =
+        (this.state.currentQuestionminutes < 10
+          ? '0' + this.state.currentQuestionminutes
+          : this.state.currentQuestionminutes) +
+        ':' +
+        (this.state.currentQuestionseconds < 10
+          ? '0' + this.state.currentQuestionseconds
+          : this.state.currentQuestionseconds);
+    }
   }
 
+  // loaded first when the page is loaded
+  componentDidMount() {
+    //moving to top
+    window.scrollTo(0, 0);
+    //getting questions
+    this.props.getQuestions();
+
+    //calling timers at the interval of 1 second
+    setInterval(this.handler, 1000);
+    this.handler();
+    setInterval(this.handlercurent, 1000);
+    this.handlercurent();
+  }
+
+  //Using when the props get updated with new values
   componentWillReceiveProps(nextProps) {
+    //getting url values from the url and decoding them and getting questions
+    const Questions =
+      nextProps.profile.questions[atob(this.props.match.params.childClass)][
+        atob(this.props.match.params.selectedSubject)
+      ][atob(this.props.match.params.index)]['Question'];
+
+    //getting url values from the url and decoding them  and getting whole subject paper along with question and answers
+    const testPaper =
+      nextProps.profile.questions[atob(this.props.match.params.childClass)][
+        atob(this.props.match.params.selectedSubject)
+      ][atob(this.props.match.params.index)];
+
+    const correctAnswer =
+      nextProps.profile.questions[atob(this.props.match.params.childClass)][
+        atob(this.props.match.params.selectedSubject)
+      ][atob(this.props.match.params.index)]['correctAnswer'];
+
+    // setting the state with questions, answers and options
     this.setState({
-      testPaper:
-        nextProps.profile.questions[atob(this.props.match.params.childClass)][
-          atob(this.props.match.params.selectedSubject)
-        ][atob(this.props.match.params.index)],
-      questions:
-        nextProps.profile.questions[atob(this.props.match.params.childClass)][
-          atob(this.props.match.params.selectedSubject)
-        ][atob(this.props.match.params.index)]['Question'],
+      testPaper: testPaper,
+      questions: Questions,
       answers:
         nextProps.profile.questions[atob(this.props.match.params.childClass)][
           atob(this.props.match.params.selectedSubject)
-        ][atob(this.props.match.params.index)]['Answer']
+        ][atob(this.props.match.params.index)]['Answer'],
+      correctanswers: correctAnswer
+    });
+
+    // appending all the question indexes for showing all the question indexes
+    const QuestionRow = [];
+    for (var index = 1; index <= Questions.length; index++) {
+      if (index === Questions.length) {
+        QuestionRow.push(index);
+      } else {
+        QuestionRow.push(index + ', ');
+      }
+    }
+
+    //setting total questions and the the total time for the whole question paper
+    this.setState({
+      remainingQuestions: QuestionRow,
+      lefttime: testPaper['Timing'].replace(' mins', '')
     });
   }
 
@@ -89,88 +193,75 @@ class Question extends Component {
     let { currentQuestionIndex } = this.state;
     let currentQuestion = [];
     let currentAnswer = [];
-    if (this.state.testPaper['Question'] !== undefined) {
-      const Questionlength = this.state.testPaper['Question'].length;
 
-      for (var index = 1; index <= Questionlength; index++) {
-        if (index > 9) {
-          if (index === currentQuestionIndex + 1) {
-            QuestionRow.push(
-              <div className="circle5 current" key={index}>
-                <div className="circle5-text-doubleDigit">{index}</div>
-              </div>
-            );
-          } else {
-            QuestionRow.push(
-              <div className="circle5" key={index}>
-                <div className="circle5-text-doubleDigit">{index}</div>
-              </div>
-            );
-          }
-        } else {
-          if (index === currentQuestionIndex + 1) {
-            QuestionRow.push(
-              <div className="circle5 current" key={index}>
-                <div className="circle5-text">{index}</div>
-              </div>
-            );
-          } else {
-            QuestionRow.push(
-              <div className="circle5" key={index}>
-                <div className="circle5-text">{index}</div>
-              </div>
-            );
-          }
-        }
+    //checking if the question paper has loaded or not and waiting till it is loaded
+    if (this.state.testPaper['Question'] !== undefined) {
+      //Checking if time is over
+      if (this.state.lefttime !== '' && this.state.lefttime === 0) {
+        console.log('asdd');
       }
 
       const seperateTextAndImage = this.state.questions[
         currentQuestionIndex
       ].split(',');
-      seperateTextAndImage.forEach(text_img => {
+      seperateTextAndImage.forEach((text_img, index) => {
+        //checking if the question contains images if it contains images then show it with img tag
         if (text_img.includes('png')) {
           currentQuestion.push(
-            <img src={'https://www.exceltestzone.com.au' + text_img} />
+            <img
+              src={'https://www.exceltestzone.com.au' + text_img}
+              key={index}
+            />
           );
         } else {
+          // else showing with text tags
           currentQuestion.push(
-            <p className="black-text margin-2pertop-bot">{text_img}</p>
+            <React.Fragment key={index}>
+              <h5 className="mathemafix__testquestion1">{text_img}</h5>
+            </React.Fragment>
           );
         }
       });
 
+      // for showing answer options
       const options = this.state.answers[currentQuestionIndex].split(',');
       let answer_img_html = [];
-      options.forEach(text_img => {
+      options.forEach((text_img, index) => {
+        //checking if the question contains images if it contains images then show it with img tag
         if (text_img.includes('png')) {
           currentAnswer.push(
-            <React.Fragment>
-              <div className="col l10 m9 s8 options__text">
-                <img src={'https://www.exceltestzone.com.au' + text_img} />
-              </div>
-              <div className="col l2 m3 s4 right-align options__option">
-                <p>
-                  <label>
-                    <input name="group1" type="radio" />
-                    <span />
-                  </label>
-                </p>
-              </div>
-            </React.Fragment>
+            <div className="col l3 m6 s12" key={index}>
+              <p>
+                <label>
+                  <input
+                    className="with-gap"
+                    name="correctanswer"
+                    value={index + 1}
+                    type="radio"
+                  />
+                  <span className="radio-size">
+                    <img src={'https://www.exceltestzone.com.au' + text_img} />
+                  </span>
+                </label>
+              </p>
+            </div>
           );
         } else {
+          // else showing with text tags
           currentAnswer.push(
-            <React.Fragment>
-              <div className="col l10 m9 s8 options__text">{text_img}</div>
-              <div className="col l2 m3 s4 right-align options__option">
-                <p>
-                  <label>
-                    <input name="group1" type="radio" />
-                    <span />
-                  </label>
-                </p>
-              </div>
-            </React.Fragment>
+            <div className="col l3 m6 s12" key={index}>
+              <p>
+                <label>
+                  <input
+                    className="with-gap"
+                    name="correctanswer"
+                    value={index + 1}
+                    type="radio"
+                  />
+                  <span className="radio-size">{text_img}</span>
+                </label>
+              </p>
+            </div>
           );
         }
       });
@@ -179,67 +270,88 @@ class Question extends Component {
     return (
       <React.Fragment>
         <Navbar class="" />
-        <section className="question">
-          <div className="row">
-            <div className="col l12 m12 s12 center-align white black-text">
-              <h3 className="question__heading">Situational Judgmnet Test</h3>
-              <div className="question__heading-number">
-                <i className="material-icons question__heading-icon">
-                  arrow_back
-                </i>
-                {this.state.testPaper !== undefined ? QuestionRow : ''}
-                <i className="material-icons question__heading-icon">
-                  arrow_forward
-                </i>
-              </div>
-              <div className="divider margin-2per" />
-            </div>
-          </div>
-        </section>
-        <section className="questionDashboard">
-          <div className="row">
-            <div className="col l6 m6 s12 grey lighten-4">
-              <h2 className="questionDashboard__question">
-                Question {currentQuestionIndex + 1}
-              </h2>
-              <p className="questionDashboard__question-text">
+        <section className="mathemafix">
+          <div className="row card-panel hoverable mathemafix__card">
+            <h5 className="mathemafix__testname">
+              Test name: &nbsp;{this.state.testPaper['Title']}
+            </h5>
+            <h5 className="mathemafix__testtime">
+              Question:{' '}
+              <span className="mathemafix__testtime-text">
+                {this.state.testPaper['Question'] !== undefined
+                  ? this.state.testPaper['Question'].length
+                  : ''}
+              </span>, Time: allowed{' '}
+              <span className="mathemafix__testtime-text">
+                {this.state.testPaper !== undefined
+                  ? this.state.testPaper['Timing']
+                  : ''}
+              </span>, spent so far{' '}
+              <span className="mathemafix__testtime-text" id="time" />, left{' '}
+              <span className="mathemafix__testtime-text">
+                {this.state.lefttime - this.state.minutes}m
+              </span>, spent{' '}
+              <span className="mathemafix__testtime-text">
+                on this question
+              </span>{' '}
+              <span className="mathemafix__testtime-text" id="currentTime">
+                49:12
+              </span>
+            </h5>
+            <div className="row mathemafix-question">
+              <div className="col l12 s12 m12">
+                <h5 className="mathemafix__testquestion">
+                  Question {currentQuestionIndex + 1}
+                </h5>
                 {currentQuestion}
-              </p>
-              <div className="row margin-10per">
-                <div className="col l3 m3 s4 right-align">
-                  <div>
-                    <i className="material-icons blue-text timer-icon">timer</i>
-                  </div>
-                </div>
-                <div className="col l9 m9 s8 moveup-2per left-align">
-                  <span className="end-test1" id="demo" />
-                  <a className="end-test">End test</a>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col l12 m12 s12">
+                <h5 className="mathemafix__testanswer">Your answer :</h5>
+                {currentAnswer}
+                <div className="margin-5per">
+                  <a
+                    className="popup__login btn  left edit"
+                    onClick={this.onNextQuestion}
+                  >
+                    Continue
+                  </a>
                 </div>
               </div>
             </div>
-            <div className="col l6 m6 s12">
-              <div className="row">
-                <div className="col l12 m12 s12 questionDashboard__options">
-                  <div className="col l10 m9 s8 center-align">
-                    <h5 className="questionDashboard__answer">Options</h5>
-                  </div>
-                  <div className="col l2 m3 s4 right-align">
-                    <h5 className="questionDashboard__answer">Answer</h5>
-                  </div>
-                  <div className="options center-align">{currentAnswer}</div>
-                  <div className="row">
-                    <div className="col l12 s12 m12 right-align">
-                      <a
-                        className="btn blue lighten-1 options__submit"
-                        onClick={this.onNextQuestion}
-                      >
-                        Next question
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div className="divider" />
+            <h5 className="mathemafix__testremaining">
+              Remained question:{' '}
+              <span className="mathemafix__testtime-text">
+                {this.state.remainingQuestions.filter(
+                  x => !this.state.answeredQuestions.includes(x)
+                )}
+              </span>
+            </h5>
+            <h5 className="mathemafix__testremaining">
+              Answered question:{' '}
+              <span className="mathemafix__testtime-text">
+                {this.state.answeredQuestions}
+              </span>
+            </h5>
+            <h5 className="mathemafix__testremaining">
+              Run rates:{' '}
+              <span className="mathemafix__testtime-text">
+                {this.state.answeredQuestions.length} completed,{' '}
+                {this.state.remainingQuestions.length -
+                  this.state.answeredQuestions.length}{' '}
+                remaining, average run{' '}
+                {parseInt(this.state.seconds) > 0 &&
+                this.state.answeredQuestions.length > 0
+                  ? parseFloat(
+                      this.state.seconds /
+                        60 /
+                        this.state.answeredQuestions.length
+                    ).toFixed(3)
+                  : '00'}min/question
+              </span>
+            </h5>
           </div>
         </section>
       </React.Fragment>
