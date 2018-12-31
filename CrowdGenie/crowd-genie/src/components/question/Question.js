@@ -12,6 +12,7 @@ class Question extends Component {
       testPaper: [],
       questions: [],
       answers: [],
+      tags: [],
       correctanswers: [],
       timeout: '',
       remainingQuestions: [],
@@ -44,6 +45,14 @@ class Question extends Component {
         dict['correctAnswer'] = this.state.correctanswers[
           this.state.currentQuestionIndex
         ];
+        dict['QuestionPaperName'] = this.state.testPaper['Title'];
+        dict['tag'] = this.state.tags[this.state.currentQuestionIndex];
+        dict['time'] =
+          this.state.currentQuestionminutes +
+          'm' +
+          ' ' +
+          this.state.currentQuestionseconds +
+          's';
         oldItems.push(dict);
         localStorage.setItem('test', JSON.stringify(oldItems));
 
@@ -54,7 +63,7 @@ class Question extends Component {
         });
 
         if (oldItems.length === this.state.questions.length) {
-          console.log('DSdsad');
+          this.props.history.push('/testreport');
         } else {
           this.setState({
             answeredQuestions: [
@@ -134,6 +143,11 @@ class Question extends Component {
     //getting questions
     this.props.getQuestions();
 
+    //clear the localStorage
+    if (localStorage.getItem('test') !== null) {
+      localStorage.removeItem('test');
+    }
+
     //calling timers at the interval of 1 second
     setInterval(this.handler, 1000);
     this.handler();
@@ -163,11 +177,9 @@ class Question extends Component {
     // setting the state with questions, answers and options
     this.setState({
       testPaper: testPaper,
-      questions: Questions,
-      answers:
-        nextProps.profile.questions[atob(this.props.match.params.childClass)][
-          atob(this.props.match.params.selectedSubject)
-        ][atob(this.props.match.params.index)]['Answer'],
+      questions: testPaper['Question'],
+      answers: testPaper['Answer'],
+      tags: testPaper['Tags'],
       correctanswers: correctAnswer
     });
 
@@ -198,7 +210,7 @@ class Question extends Component {
     if (this.state.testPaper['Question'] !== undefined) {
       //Checking if time is over
       if (this.state.lefttime !== '' && this.state.lefttime === 0) {
-        console.log('asdd');
+        this.props.history.push('/testreport');
       }
 
       const seperateTextAndImage = this.state.questions[

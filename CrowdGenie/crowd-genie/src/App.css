@@ -1647,3 +1647,89 @@ body .nav-main a:hover {
   margin-top: 5%;
   margin-bottom: 3%;
 }
+
+.report {
+  margin-top: 5%;
+  padding: 2rem;
+}
+.report__reports {
+  margin-top: 10% !important;
+}
+.report__testname {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+  padding-bottom: 2rem;
+}
+.report__row {
+  margin: 2rem 0;
+}
+.report__header {
+  padding: 0 !important;
+}
+.report__header-textheading {
+  padding: 1rem;
+  background-color: #e7e4e4;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 1.2vw;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  border-right: 3px solid white;
+}
+.report__header-text {
+  text-align: center;
+  font-size: 1.2vw;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+.report__header-text2 {
+  margin-top: 2%;
+  text-align: center;
+  font-size: 1.2vw;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+.report > .row .col {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.report_testStatistics {
+  margin-left: 5%;
+  margin-top: 10%;
+  border-top: 2px solid #e0dede;
+}
+.report_testStatistics-heading {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+}
+.report_testStatistics-headingTag {
+  font-family: 'Monsterrat', sans-serif;
+  font-weight: 500;
+  margin-top: 5%;
+  font-size: 2rem;
+}
+
+.wrong {
+  vertical-align: top;
+  margin-right: 1%;
+  font-family: 'Monsterrat', sans-serif;
+  font-weight: 500;
+  font-size: 2rem;
+  background-color: #c01a1a;
+  display: inline-block;
+}
+
+.Right {
+  vertical-align: top;
+  margin-right: 1%;
+  font-family: 'Monsterrat', sans-serif;
+  font-weight: 500;
+  font-size: 2rem;
+  background-color: #46ba6f;
+  display: inline-block;
+}
