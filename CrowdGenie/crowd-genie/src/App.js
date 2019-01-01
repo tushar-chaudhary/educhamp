@@ -15,6 +15,7 @@ import EditParentPassword from './components/layout/EditParentPassword';
 import EditChild from './components/layout/EditChild';
 import EditChildPassword from './components/layout/EditChildPassword';
 import Testreport from './components/question/Testreport';
+import Viewreport from './components/question/Viewreport';
 import ChildDashboard from './components/layout/ChildDashboard';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -80,6 +81,7 @@ class App extends Component {
             />
             <Route exact path="/editChild" component={EditChild} />
             <Route exact path="/testreport" component={Testreport} />
+            <Route exact path="/viewreport" component={Viewreport} />
             <Route
               exact
               path="/editChildPassword"

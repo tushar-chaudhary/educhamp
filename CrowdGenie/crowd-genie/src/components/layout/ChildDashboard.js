@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { getQuestions } from '../../actions/profileAction';
+import { getTestReport, getTestReportByTitle } from '../../actions/testActions';
 import M from 'materialize-css';
 
 class ChildDashboard extends Component {
@@ -36,8 +37,12 @@ class ChildDashboard extends Component {
     }
   }
 
+  onViewReport(e, localstorage) {
+    localStorage.setItem('test', localstorage);
+    this.props.history.push('/viewreport');
+  }
+
   onfilter(e, subjectName) {
-    console.log(subjectName);
     this.setState({
       selectedSubject: subjectName
     });
@@ -57,6 +62,14 @@ class ChildDashboard extends Component {
     });
 
     this.props.getQuestions();
+    this.props.getTestReport({
+      user:
+        this.props.user._id === undefined
+          ? this.props.user.id
+          : this.props.user._id
+    });
+
+    // this.props.getTestReportByTitle({ class: this.props.user.schoolYear });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,6 +85,7 @@ class ChildDashboard extends Component {
   }
   render() {
     const { user } = this.props;
+    const { results } = this.props;
     let availableSubjects = [];
     let { testPaper } = this.state;
     let testCollection = [];
@@ -88,50 +102,165 @@ class ChildDashboard extends Component {
         if (this.state.selectedSubject !== '') {
           testCollection.length = 0;
           testPaper[this.state.selectedSubject].forEach((test, index) => {
-            testCollection.push(
-              <React.Fragment key={index}>
-                <div className="col l12 s12 m12 totalAssessment__row border-button">
-                  <div className="col l1 m1">
-                    <img src="images/notebook.svg" className="notebook" />
-                  </div>
-                  <div className="col l2 m2 s12 totalAssessment__text">
-                    {test['Title']}
-                  </div>
-                  <div className="col l1 m1 s12 totalAssessment__text">
-                    {test['Timing']}
-                  </div>
-                  <div className="col l1 m2 s12 totalAssessment__text center-align" />
-                  <div className="col l2 m2 s12 totalAssessment__text center-align">
-                    {index === 0 || index === 1 ? 'Free Test' : 'Paid Test'}
-                  </div>
-                  <div className="col l2 m2 s12 totalAssessment__text">
-                    <div className="col l6 m6 s12">
-                      <div className="circle4">{test['Question'].length}</div>
-                    </div>
-                  </div>
-                  <div className="col l1 m2 s12 totalAssessment__text center-align">
-                    -
-                  </div>
-                  <div className="col l2 m2 s12 totalAssessment__text center-align">
-                    <a
-                      className="btn edit2"
-                      onClick={e =>
-                        this.onSubmit(
-                          e,
-                          user.schoolYear,
-                          this.state.selectedSubject,
-                          index === 0 || index === 1
+            if (Object.keys(results).length !== 0) {
+              if (Object.keys(results.test_report).length !== 0) {
+                if (
+                  results.test_report.find(o => o.testName === test['Title'])
+                ) {
+                  testCollection.push(
+                    <React.Fragment key={index}>
+                      <div className="col l12 s12 m12 totalAssessment__row border-button">
+                        <div className="col l1 m1">
+                          <img src="images/notebook.svg" className="notebook" />
+                        </div>
+                        <div className="col l2 m2 s12 totalAssessment__text">
+                          {test['Title']}
+                        </div>
+                        <div className="col l1 m1 s12 totalAssessment__text">
+                          {test['Timing']}
+                        </div>
+                        <div className="col l1 m2 s12 totalAssessment__text center-align">
+                          {results.test_report
+                            .find(o => o.testName === test['Title'])
+                            .date.substring(0, 10)}
+                        </div>
+                        <div className="col l2 m2 s12 totalAssessment__text center-align">
+                          {index === 0 || index === 1
                             ? 'Free Test'
-                            : 'Paid Test',
-                          index
-                        )}
-                    >
-                      Take it
-                    </a>
-                  </div>
-                </div>
-              </React.Fragment>
-            );
+                            : 'Paid Test'}
+                        </div>
+                        <div className="col l2 m2 s12 totalAssessment__text">
+                          <div className="col l6 m6 s12">
+                            <div className="circle4">
+                              {test['Question'].length}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col l1 m2 s12 totalAssessment__text center-align">
+                          {
+                            results.test_report.find(
+                              o => o.testName === test['Title']
+                            ).score
+                          }{' '}
+                          %
+                        </div>
+                        <div className="col l2 m2 s12 totalAssessment__text center-align">
+                          <a
+                            className="btn edit2"
+                            onClick={e =>
+                              this.onViewReport(
+                                e,
+
+                                results.test_report.find(
+                                  o => o.testName === test['Title']
+                                ).report
+                              )}
+                          >
+                            View report
+                          </a>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  );
+                } else {
+                  testCollection.push(
+                    <React.Fragment key={index}>
+                      <div className="col l12 s12 m12 totalAssessment__row border-button">
+                        <div className="col l1 m1">
+                          <img src="images/notebook.svg" className="notebook" />
+                        </div>
+                        <div className="col l2 m2 s12 totalAssessment__text">
+                          {test['Title']}
+                        </div>
+                        <div className="col l1 m1 s12 totalAssessment__text">
+                          {test['Timing']}
+                        </div>
+                        <div className="col l1 m2 s12 totalAssessment__text center-align" />
+                        <div className="col l2 m2 s12 totalAssessment__text center-align">
+                          {index === 0 || index === 1
+                            ? 'Free Test'
+                            : 'Paid Test'}
+                        </div>
+                        <div className="col l2 m2 s12 totalAssessment__text">
+                          <div className="col l6 m6 s12">
+                            <div className="circle4">
+                              {test['Question'].length}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col l1 m2 s12 totalAssessment__text center-align">
+                          -
+                        </div>
+                        <div className="col l2 m2 s12 totalAssessment__text center-align">
+                          <a
+                            className="btn edit2"
+                            onClick={e =>
+                              this.onSubmit(
+                                e,
+                                user.schoolYear,
+                                this.state.selectedSubject,
+                                index === 0 || index === 1
+                                  ? 'Free Test'
+                                  : 'Paid Test',
+                                index
+                              )}
+                          >
+                            Take it
+                          </a>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  );
+                }
+              } else {
+                testCollection.push(
+                  <React.Fragment key={index}>
+                    <div className="col l12 s12 m12 totalAssessment__row border-button">
+                      <div className="col l1 m1">
+                        <img src="images/notebook.svg" className="notebook" />
+                      </div>
+                      <div className="col l2 m2 s12 totalAssessment__text">
+                        {test['Title']}
+                      </div>
+                      <div className="col l1 m1 s12 totalAssessment__text">
+                        {test['Timing']}
+                      </div>
+                      <div className="col l1 m2 s12 totalAssessment__text center-align" />
+                      <div className="col l2 m2 s12 totalAssessment__text center-align">
+                        {index === 0 || index === 1 ? 'Free Test' : 'Paid Test'}
+                      </div>
+                      <div className="col l2 m2 s12 totalAssessment__text">
+                        <div className="col l6 m6 s12">
+                          <div className="circle4">
+                            {test['Question'].length}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col l1 m2 s12 totalAssessment__text center-align">
+                        -
+                      </div>
+                      <div className="col l2 m2 s12 totalAssessment__text center-align">
+                        <a
+                          className="btn edit2"
+                          onClick={e =>
+                            this.onSubmit(
+                              e,
+                              user.schoolYear,
+                              this.state.selectedSubject,
+                              index === 0 || index === 1
+                                ? 'Free Test'
+                                : 'Paid Test',
+                              index
+                            )}
+                        >
+                          Take it
+                        </a>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                );
+              }
+            }
           });
         }
       });
@@ -252,7 +381,7 @@ class ChildDashboard extends Component {
               <div className="col l2 m2 s12 totalAssessment__heading">Name</div>
               <div className="col l1 m1 s12 totalAssessment__heading">Time</div>
               <div className="col l1 m2 s12 totalAssessment__heading center-align">
-                Ranking
+                Completed date
               </div>
               <div className="col l2 m2 s12 totalAssessment__heading center-align">
                 Test type
@@ -279,9 +408,12 @@ const mapStateToProps = state => ({
   auth: state.auth,
   user: state.auth.user,
   profile: state.profile,
+  results: state.results,
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { getQuestions })(
-  withRouter(ChildDashboard)
-);
+export default connect(mapStateToProps, {
+  getQuestions,
+  getTestReport,
+  getTestReportByTitle
+})(withRouter(ChildDashboard));

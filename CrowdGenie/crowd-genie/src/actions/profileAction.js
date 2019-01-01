@@ -17,12 +17,13 @@ export const getQuestions = () => dispatch => {
         payload: res.data.questions
       })
     )
-    .catch(err =>
+    .catch(err => {
+      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
-    );
+      });
+    });
 };
 
 export const getProfile = userData => dispatch => {

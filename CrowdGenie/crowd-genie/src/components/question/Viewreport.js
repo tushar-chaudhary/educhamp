@@ -3,9 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Navbar from '../layout/Navbar';
 import $ from 'jquery';
-import { testReportSubmit } from '../../actions/testActions';
 
-class Testreport extends Component {
+class Viewreport extends Component {
   constructor() {
     super();
     this.state = {
@@ -98,14 +97,8 @@ class Testreport extends Component {
   }
 
   ontestSubmit(e) {
-    let testDetails = {};
-    testDetails['testName'] = this.state.localstorage[0]['QuestionPaperName'];
-    testDetails['score'] = $('#score').text();
-    testDetails['user'] = this.props.user._id;
-    testDetails['class'] = this.props.user.schoolYear;
-    testDetails['report'] = JSON.stringify(this.state.localstorage);
-
-    this.props.testReportSubmit(testDetails, this.props.history);
+    localStorage.removeItem('test');
+    this.props.history.push('/childDashboard');
   }
 
   render() {
@@ -269,7 +262,7 @@ class Testreport extends Component {
                 this.ontestSubmit(e);
               }}
             >
-              Finish test
+              back
             </a>
           </div>
         </section>
@@ -284,6 +277,4 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(mapStateToProps, { testReportSubmit })(
-  withRouter(Testreport)
-);
+export default connect(mapStateToProps, {})(withRouter(Viewreport));
